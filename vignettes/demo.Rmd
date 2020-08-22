@@ -9,6 +9,6 @@ vignette: >
 
 
 ```{r setup}
-library(holachinosordo)
+library(sap)
 hello()
 ```
