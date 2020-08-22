@@ -1,2 +1,2 @@
 # r-sap
-This is the package to use SAP
+This is the package to use SAP algorithm
