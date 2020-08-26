@@ -28,7 +28,7 @@ Suggests:
 Dependes: 
     R (>= 3.2.0)
 Imports:
-    bibliometrics,
+    bibliometrix,
     tidyverse,
     igraph
 VignetteBuilder: 
