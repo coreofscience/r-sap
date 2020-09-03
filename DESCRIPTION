@@ -1,4 +1,4 @@
-Package: sap
+Package: rsap
 Type: Package
 Title: An evolution of Tree of Science
 Version: 0.1.0
@@ -28,9 +28,15 @@ Suggests:
 Dependes: 
     R (>= 3.2.0)
 Imports:
-    bibliometrics,
+    bibliometrix,
     tidyverse,
-    igraph
+    igraph,
+    dplyr,
+    tidyr,
+    stringr,
+    utils,
+    magrittr,
+    rlang
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
