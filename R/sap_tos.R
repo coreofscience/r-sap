@@ -1,21 +1,19 @@
-#' @title sap algorithm
-#' 
-#' @description sap algorithm represents the metaphor of the 
+#' sap
+#'
+#' sap algorithm
+#'
+#' sap algorithm represents the metaphor of the
 #' tree sap
-#'  
+#'
 #' @param file the isi file (txt) downloaded from web of science
-#'  
+#'
 #' @author Sebastian Robledo
-#'  
-#' @import bibliometrix
-#' @import sap_load
-#' @import sap_graph
-#'  
+#'
 #' @return a dataframe with roots, trunk, and leaves
-#'  
+#'
 #' @export
 
-sap <- function(file) {
+sap_tos <- function(file) {
   
   isi_file <- sap_load(file)
   
