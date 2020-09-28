@@ -1,9 +1,6 @@
-#' Creating a graph object
+#' Creating cited references list from scopus data frame
 #'
-#' from df isi to graph
 #'
-#' Load a dataframe with isi data and convert it
-#' in a graph
 #'
 #' @param scopus_dataframe a dataframe with wos data
 #'
@@ -22,9 +19,10 @@
 #' @import dplyr
 #' @import wordcloud
 #'
-#' @return a graph object
-#'
-sap_graph <- function(scopus_dataframe){
+#' @return a dataframe with cited references
+
+
+sap_citedReferences <- function(scopus_dataframe) {
 
   pattern_authors <-
     SPC %R%
@@ -89,36 +87,6 @@ sap_graph <- function(scopus_dataframe){
                          CR_JOURNAL)) %>%
     select(-lastname)
 
-
-  edge_list <-
-    cited_references %>%
-    select(SR_TOS,
-           CR_SO) %>%
-    na.omit() %>%
-    unique()
-
-
-  graph <- graph.data.frame(edge_list) %>%
-    simplify()
-
-  # Se eliminan los vertices con indegree = 1 y con outdegree = 0
-  graph_1 <- delete.vertices(graph,
-                             which(degree(graph, mode = "in") == 1 &
-                                     degree(graph, mode = "out") == 0))
-
-  # Se escoge el componente mas grande conectado
-  graph_2 <- giant_component_extract(graph_1, directed = TRUE)
-  graph_2 <- graph_2[[1]]
-
-  subareas <-
-    as.undirected(graph_2,
-                  mode = "each") %>%
-    cluster_louvain()
-
-  graph_2 <-
-    graph_2 %>%
-    set_vertex_attr(name = "sub_area",
-                    value = membership(subareas))
-
+  return(cited_references)
 
 }

@@ -1,29 +1,38 @@
 #' Creating our ToS
 #'
-#' from graph isi to sap - Tree of Science
+#' from graph .bib to sap - Tree of Science
 #'
-#' Load a dataframe with isi data and convert it
+#' Load a dataframe with .bib data and convert it
 #' in a graph
 #'
 #' @param graph_file a dataframe with wos data
 #'
 #' @author Sebastian Robledo
 #'
-#' @import dplyr
 #' @import igraph
-#' @import utils
+#' @import tidyverse
+#' @import bibliometricx
+#' @import ggplot2
+#' @import CINNA
+#' @import formattable
+#' @import rebus
+#' @import tm
+#' @import lubridate
+#' @import gt
+#' @import dplyr
+#' @import wordcloud
 #'
-#' @return a graph object
-#' @importFrom utils head
+#' @return a dataframe with Tree of science
 
-sap_process <- function(graph_file) {
+sap_process <- function(graph) {
+
   # Se crean la metricas de la red
 
   metricas.red <- tibble(
-    id        = V(graph_2)$name,
-    indegree  = degree(graph_2, mode = "in"),
-    outdegree = degree(graph_2, mode = "out"),
-    bet       = betweenness(graph_2))
+    id        = V(graph)$name,
+    indegree  = degree(graph, mode = "in"),
+    outdegree = degree(graph, mode = "out"),
+    bet       = betweenness(graph))
 
   metricas.red <- metricas.red %>%
     mutate(year = as.numeric(str_extract(id, "[0-9]{4}")))
@@ -58,7 +67,7 @@ sap_process <- function(graph_file) {
   # Calculo del SAP de las Hojas
   SAP_hojas <- c()
   for (vert in Hojas$id){
-    h <- get.all.shortest.paths(graph_2,
+    h <- get.all.shortest.paths(graph,
                                 from = vert,
                                 to   = Raices$id,
                                 mode = "out")
@@ -74,7 +83,7 @@ sap_process <- function(graph_file) {
 
   Caminos   <- c()
   for (vert in Hojas$id){
-    h <- get.all.shortest.paths(graph_2,
+    h <- get.all.shortest.paths(graph,
                                 from = vert,
                                 to   = Raices$id,
                                 mode = "out")
@@ -100,6 +109,6 @@ sap_process <- function(graph_file) {
   Hojas$TOS  <- "Hojas"
   Tronco$TOS <- "Tronco"
 
-  tos       <- rbind(Raices[,c(1,3)], Tronco[,c(1,5)], Hojas[,c(1,6)])
+  tos   <- rbind(Raices[,c(1,3)], Tronco[,c(1,5)], Hojas[,c(1,6)])
   return(tos)
 }
