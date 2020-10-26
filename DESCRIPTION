@@ -20,12 +20,12 @@ Authors@R: c(person(given = "Sebastian",
                     role = c("cph", "fnd")))
 Description: A fast way to understand the evolution of a research topic with the
     tree methaphor.
-License: GPL-3
+License: MIT + file LICENSE
 BugReports: https://github.com/coreofscience/r-sap/issues
 Suggests: 
     knitr,
     rmarkdown
-Dependes: 
+Depends: 
     R (>= 3.2.0)
 Imports:
     bibliometrix,
