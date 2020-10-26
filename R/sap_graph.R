@@ -25,21 +25,21 @@
 #' @return a graph object
 #'
 sap_graph <- function(isi_df) {
-  
+
   isi_df$ID_WOS <- rownames(isi_df)
-  
+
   isi_df$ID_WOS <- ifelse(!is.na(isi_df$VL),
                           paste(isi_df$ID_WOS,
                                 isi_df$VL,
                                 sep = ", V"),
                           isi_df$ID_WOS)
-  
+
   isi_df$ID_WOS <- ifelse(!is.na(isi_df$BP),
                           paste(isi_df$ID_WOS,
                                 isi_df$BP,
                                 sep = ", P"),
                           isi_df$ID_WOS)
-  
+
   isi_df$ID_WOS <- ifelse(!is.na(isi_df$DI),
                           paste(isi_df$ID_WOS,
                                 isi_df$ID,
@@ -56,26 +56,26 @@ sap_graph <- function(isi_df) {
     dplyr::mutate(ID_WOS = stringr::str_to_upper(.data$ID_WOS),
                   CR = stringr::str_to_upper(.data$CR)) %>%
     unique()
-  
+
   graph <-
     igraph::graph.data.frame(edgelist) %>%
     igraph::simplify()
-  
+
   graph_1 <-
     igraph::delete.vertices(graph,
                             which(igraph::degree(graph,
                                                  mode = "in") == 1 &
                                     igraph::degree(graph,
                                                    mode = "out") == 0))
-  
+
   giant.component <- function(graph) {
-    
+
     cl <- igraph::clusters(graph)
-    
+
     igraph::induced.subgraph(graph,
                              which(cl$membership == which.max(cl$csize)))
   }
-  
+
   graph_file <- giant.component(graph_1)
-  
+
 }
