@@ -10,15 +10,13 @@
 #' @author Sebastian Robledo
 #'
 #' @import dplyr
-#' @import tidyr
-#' @import igraph
-#' @import tidyverse
-#' @import stringr
-#' @import utils
-#' @import magrittr
-#' @import rlang
-#'
-#' @importFrom dplyr %>%
+#' @importFrom tidyr separate_rows
+#' @importFrom igraph graph.data.frame
+#' @importFrom igraph simplify
+#' @importFrom igraph delete.vertices
+#' @importFrom igraph degree
+#' @importFrom igraph clusters
+#' @importFrom igraph induced.subgraph
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #'
@@ -58,21 +56,21 @@ sap_graph <- function(isi_df) {
     unique()
 
   graph <-
-    igraph::graph.data.frame(edgelist) %>%
-    igraph::simplify()
+    graph.data.frame(edgelist) %>%
+    simplify()
 
   graph_1 <-
-    igraph::delete.vertices(graph,
-                            which(igraph::degree(graph,
+    delete.vertices(graph,
+                            which(degree(graph,
                                                  mode = "in") == 1 &
-                                    igraph::degree(graph,
+                                    degree(graph,
                                                    mode = "out") == 0))
 
   giant.component <- function(graph) {
 
-    cl <- igraph::clusters(graph)
+    cl <- clusters(graph)
 
-    igraph::induced.subgraph(graph,
+    induced.subgraph(graph,
                              which(cl$membership == which.max(cl$csize)))
   }
 
